@@ -6,7 +6,7 @@ import util.Print;
  * User: FR
  * Time: 11/3/14 3:03 PM
  */
-public class knapsack01 {
+public class Knapsack01 {
 
     public static int getOptimization(int[] v, int[] w, int c){
         int[][] s = new int[v.length+1][c+1];
@@ -29,6 +29,6 @@ public class knapsack01 {
         int[] v = {2, 3, 5, 9, 6, 4};
         int[] w = {3, 4, 6, 4, 7, 6};
         int c =10 ;
-        knapsack01.getOptimization(v, w, c);
+        Knapsack01.getOptimization(v, w, c);
     }
 }
