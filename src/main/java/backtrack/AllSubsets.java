@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * User: FR
  * Time: 11/28/14 2:20 PM
+ * 子集合
  */
 public class AllSubsets extends Methodology {
 

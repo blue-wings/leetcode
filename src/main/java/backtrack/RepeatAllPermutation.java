@@ -1,25 +1,39 @@
 package backtrack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User: FR
- * Time: 12/2/14 2:32 PM
- * 输出不重复数字的全排列
+ * Time: 12/3/14 1:56 PM
+ * 给定一个字符串，生成组成这个字符串的字母的全排列
  */
-public class AllPermutation extends Methodology {
+public class RepeatAllPermutation extends Methodology {
+
+    private  Map<Integer, Integer> valueTimes;
+
+    public RepeatAllPermutation(int[] t) {
+        this.valueTimes  = new HashMap<Integer, Integer>();
+        for(Integer value : t){
+            Integer times = valueTimes.get(value) == null?0:valueTimes.get(value);
+            valueTimes.put(value, ++times);
+        }
+    }
 
     @Override
     public void backtrack(int[] a, int k, int[] t) {
-        List<Integer> candidates = new ArrayList<Integer>();
-        if(isASolution(a, k, t )){
+        if(isASolution(a, k, t)){
             processSolution(a, k, t);
         }else {
             k++;
+            List<Integer>  candidates = new ArrayList<Integer>();
             constructCandidates(a, k-1, t, candidates);
             for(Integer candidate : candidates){
                 a[k-1] = candidate;
-                backtrack(a , k, t);
+                add(a, k , t);
+                backtrack(a, k, t);
                 remove(a, k, t);
             }
         }
@@ -27,29 +41,24 @@ public class AllPermutation extends Methodology {
 
     @Override
     public void add(int[] a, int k, int[] t) {
-
+        Integer times = valueTimes.get(a[k - 1]);
+        valueTimes.put(a[k-1], --times);
     }
 
     @Override
     public void remove(int[] a, int k, int[] t) {
-        a[k-1] = 0;
+        Integer times = valueTimes.get(a[k - 1]);
+        valueTimes.put(a[k-1], ++times);
     }
 
     @Override
     public void constructCandidates(int[] a, int k, int[] t, List<Integer> candidates) {
-        for(int e : t){
-            boolean used = false;
-            for(int ae : a){
-                if(e == ae){
-                    used = true;
-                    break;
-                }
-            }
-            if(!used && !candidates.contains(e)){
-                candidates.add(e);
+        for(Integer value : valueTimes.keySet()){
+            Integer times = valueTimes.get(value);
+            if(times != 0){
+                candidates.add(value);
             }
         }
-        System.out.println("");
     }
 
     @Override
@@ -71,30 +80,9 @@ public class AllPermutation extends Methodology {
         return k == t.length;
     }
 
-    public void fastDone(int[] t, int k){
-        if(k == t.length){
-            for(int e : t){
-                System.out.print(e);
-            }
-            System.out.println("");
-            return;
-        }
-        for(int i=k; i<t.length; i++){
-            swap(t, i, k);
-            fastDone(t, k+1);
-            swap(t, i, k);
-        }
-    }
-
-    private void swap(int[] t, int index1, int index2){
-        int temp = t[index1];
-        t[index1] = t[index2];
-        t[index2] = temp;
-    }
-
     public static void main(String[] args){
-        AllPermutation permutation = new AllPermutation();
-        int[] t = {1, 2, 3};
+        int[] t = {1, 2, 3, 1};
+        RepeatAllPermutation permutation = new RepeatAllPermutation(t);
         int[] a = new int[t.length];
         permutation.backtrack(a, 0, t);
     }
