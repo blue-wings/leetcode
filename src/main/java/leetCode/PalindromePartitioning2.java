@@ -1,7 +1,5 @@
 package leetCode;
 
-import util.Print;
-
 /**
  * User: FR
  * Time: 12/29/14 10:38 AM
@@ -15,7 +13,6 @@ public class PalindromePartitioning2 {
         boolean[][] p = new boolean[s.length()][s.length()];
         char[] c = s.toCharArray();
         fillArray(p, c);
-        Print.print2DArray(p);
         int[] f = new int[s.length()];
         for(int i=1; i<f.length; i++){
             f[i] = i;
@@ -35,7 +32,8 @@ public class PalindromePartitioning2 {
     }
 
     /**
-     *
+     *  注意代码的技巧，普通的双层循环为导致超时
+     * 第一层循环定义了i和j的间距，后一次循环可以使用前一层循环的结果， 时间复杂度小于O(N*N),更重要的减小回文判断的复杂度以及次数
      * @param p
      * @param c
      */
@@ -49,14 +47,6 @@ public class PalindromePartitioning2 {
                 p[i][j] = c[i] == c[j] && (i + 1 < j - 1 && p[i + 1][j - 1] || i + 1 >= j - 1);
             }
         }
-    }
-
-    private boolean isPalindrome(String s){
-        String rs = new StringBuffer(s).reverse().toString();
-        if(s.equals(rs)){
-            return true;
-        }
-        return false;
     }
 
     public static void main(String[] args){
