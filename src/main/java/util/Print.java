@@ -37,4 +37,13 @@ public class Print {
             System.out.println("");
         }
     }
+
+    public static void print2DArray(boolean[][] array){
+        for(boolean[] a : array){
+            for(boolean o : a){
+                System.out.print(o + ", ");
+            }
+            System.out.println("");
+        }
+    }
 }

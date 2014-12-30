@@ -1,5 +1,7 @@
 package leetCode;
 
+import util.Print;
+
 /**
  * User: FR
  * Time: 12/29/14 10:38 AM
@@ -10,6 +12,55 @@ package leetCode;
  */
 public class PalindromePartitioning2 {
     public int minCut(String s) {
-        return -1;
+        boolean[][] p = new boolean[s.length()][s.length()];
+        char[] c = s.toCharArray();
+        fillArray(p, c);
+        Print.print2DArray(p);
+        int[] f = new int[s.length()];
+        for(int i=1; i<f.length; i++){
+            f[i] = i;
+        }
+        for(int i=1; i<s.length(); i++){
+            if(p[0][i]){
+                f[i]=0;
+                continue;
+            }
+            for(int j=0; j<=i; j++){
+                if(p[j][i] && (f[j-1]+1)<f[i]){
+                    f[i]=f[j-1]+1;
+                }
+            }
+        }
+        return f[s.length()-1];
+    }
+
+    /**
+     *
+     * @param p
+     * @param c
+     */
+    private void fillArray(boolean[][] p, char[] c) {
+        for (int i = 0; i < c.length; i++) {
+            p[i][i] = true;
+        }
+        for (int k = 1; k < c.length; k++) {
+            for (int i = 0; i + k < c.length; i++) {
+                int j = i + k;
+                p[i][j] = c[i] == c[j] && (i + 1 < j - 1 && p[i + 1][j - 1] || i + 1 >= j - 1);
+            }
+        }
+    }
+
+    private boolean isPalindrome(String s){
+        String rs = new StringBuffer(s).reverse().toString();
+        if(s.equals(rs)){
+            return true;
+        }
+        return false;
+    }
+
+    public static void main(String[] args){
+        String s = "abbcca";
+        System.out.println(new PalindromePartitioning2().minCut(s));
     }
 }
