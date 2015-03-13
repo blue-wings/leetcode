@@ -159,6 +159,32 @@ public class RSA {
         return (new BASE64Encoder()).encode(out.toByteArray());
     }
 
+
+    public static String signByPrivateKeyBase64(String content, PrivateKey key) {
+        try {
+            Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+            signature.initSign(key);
+            signature.update(content.getBytes(ENCODING));
+            byte[] signed = signature.sign();
+            return encryptBASE64 (signed);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static boolean verifySignByPublicKeyUrlBase64(String content, String sign, PublicKey key) {
+        try {
+            Signature signature = Signature.getInstance(SIGNATURE_ALGORITHM);
+            signature.initVerify(key);
+            signature.update(content.getBytes(ENCODING));
+            return signature.verify(decryptBASE64(sign));
+        } catch (Exception e) {
+            // ignore exception
+        }
+        return false;
+    }
+
     public static void main(String[] args) throws Exception {
         Map<String, Object> keyMap;
         keyMap = initKey();
